@@ -7,7 +7,7 @@
         public string Email { get; set; }           // E-Mail
         public string Phone { get; set; }           // Telefon
         public string Priority { get; set; }        // Priorität
-        public int ServiceID { get; set; }          // Dienstleistung
+        public int ServiceID { get; set; }          // Dienstleistungs-ID
         public string Status { get; set; }          // Status
         public bool IsDeleted { get; set; }         // Gelöscht-Markierung
         public DateTime DateCreated { get; set; }   // Erstellungsdatum

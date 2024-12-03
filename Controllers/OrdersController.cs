@@ -68,5 +68,49 @@ namespace API_Modul295.Controllers
 
             return Ok(orders);
         }
+        
+        // POST: api/orders
+        //TODO Validierung (E-Mail/Phone)
+        [HttpPost]
+        public async Task<ActionResult<Order>> CreateOrder([FromBody] OrderCreateRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Die Anfrage darf nicht leer sein.");
+                }
+
+                // Optional: Validierung der Eingabedaten im Controller
+                if (string.IsNullOrEmpty(request.CustomerName) ||
+                    string.IsNullOrEmpty(request.Email) ||
+                    string.IsNullOrEmpty(request.Priority) ||
+                    request.ServiceID <= 0)
+                {
+                    return BadRequest("Bitte füllen Sie alle erforderlichen Felder aus.");
+                }
+
+                // Überprüfen, ob die Priorität gültig ist
+                if (!PriorityLevels.All.Contains(request.Priority, StringComparer.OrdinalIgnoreCase))
+                {
+                    return BadRequest(
+                        $"Ungültige Priorität. Gültige Werte sind: {string.Join(", ", PriorityLevels.All)}.");
+                }
+
+                var newOrder = await _orderService.CreateOrderAsync(request);
+
+                // Rückgabe des erstellten Auftrags mit HTTP 201 Created
+                return CreatedAtAction(nameof(GetOrderById), new { id = newOrder.OrderID }, newOrder);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Allgemeine Fehlerbehandlung
+                return StatusCode(500, $"Interner Serverfehler: {ex.Message}");
+            }
+        }
     }
 }

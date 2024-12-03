@@ -40,5 +40,48 @@ namespace API_Modul295.Services
                 .ToListAsync();
         }
 
+        public async Task<Order> CreateOrderAsync(OrderCreateRequest request)
+        {
+            // Validierung der Eingabedaten (optional, kann auch im Controller erfolgen)
+            if (string.IsNullOrEmpty(request.CustomerName) ||
+                string.IsNullOrEmpty(request.Email) ||
+                string.IsNullOrEmpty(request.Priority) ||
+                request.ServiceID <= 0)
+            {
+                throw new ArgumentException("Ungültige Eingabedaten.");
+            }
+
+            // Überprüfen, ob die angegebene Priorität gültig ist
+            if (!PriorityLevels.All.Contains(request.Priority, StringComparer.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException($"Ungültige Priorität. Gültige Werte sind: {string.Join(", ", PriorityLevels.All)}.");
+            }
+
+            // Überprüfen, ob die angegebene ServiceID existiert
+            var serviceExists = await _context.Services.AnyAsync(s => s.ServiceID == request.ServiceID);
+            if (!serviceExists)
+            {
+                throw new ArgumentException($"Die Dienstleistung mit der ID {request.ServiceID} existiert nicht.");
+            }
+
+            // Erstellen eines neuen Auftrags
+            var newOrder = new Order
+            {
+                CustomerName = request.CustomerName,
+                Email = request.Email,
+                Phone = request.Phone,
+                Priority = request.Priority,
+                ServiceID = request.ServiceID,
+                Status = "Offen",
+                IsDeleted = false,
+                DateCreated = DateTime.UtcNow
+            };
+
+            // Auftrag zur Datenbank hinzufügen
+            _context.Orders.Add(newOrder);
+            await _context.SaveChangesAsync();
+
+            return newOrder;
+        }
     }
 }
