@@ -8,5 +8,6 @@ namespace API_Modul295.Services
     {
         Task<IEnumerable<Order>> GetOrdersAsync();
         Task<Order> GetOrderByIdAsync(int id);
+        Task<IEnumerable<Order>> GetOrdersByPriorityAsync(string priority);
     }
 }

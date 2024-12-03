@@ -43,5 +43,30 @@ namespace API_Modul295.Controllers
 
             return Ok(order);
         }
+        
+        // GET: api/orders/priority/{priority}
+        [HttpGet("priority/{priority}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByPriority(string priority)
+        {
+            if (string.IsNullOrEmpty(priority))
+            {
+                return BadRequest("Die Priorität darf nicht leer sein.");
+            }
+
+            // Validierung der Prioritätswerte (optional)
+            if (!PriorityLevels.All.Contains(priority, StringComparer.OrdinalIgnoreCase))
+            {
+                return BadRequest($"Ungültige Priorität. Gültige Werte sind: {string.Join(", ", PriorityLevels.All)}.");
+            }
+
+            var orders = await _orderService.GetOrdersByPriorityAsync(priority);
+
+            if (orders == null || !orders.Any())
+            {
+                return NotFound($"Keine Aufträge mit der Priorität '{priority}' gefunden.");
+            }
+
+            return Ok(orders);
+        }
     }
 }
