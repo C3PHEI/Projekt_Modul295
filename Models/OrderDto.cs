@@ -1,6 +1,6 @@
 ﻿namespace API_Modul295.Models
 {
-    public class Order
+    public class OrderDto
     {
         public int OrderID { get; set; }
         public string CustomerName { get; set; }    // Kundenname
@@ -8,11 +8,9 @@
         public string Phone { get; set; }           // Telefon
         public string Priority { get; set; }        // Priorität
         public int ServiceID { get; set; }          // Dienstleistungs-ID
+        public string ServiceName { get; set; }     // Name der Dienstleistung
         public string Status { get; set; }          // Status
-        public bool IsDeleted { get; set; }         // Gelöscht-Markierung
         public DateTime DateCreated { get; set; }   // Erstellungsdatum
         public DateTime? DateModified { get; set; } // Änderungsdatum
-        
-        public Service Service { get; set; }
     }
 }

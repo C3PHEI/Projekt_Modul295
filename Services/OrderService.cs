@@ -20,6 +20,7 @@ namespace API_Modul295.Services
         public async Task<IEnumerable<Order>> GetOrdersAsync()
         {
             return await _context.Orders
+                .Include(o => o.Service)
                 .Where(o => !o.IsDeleted)
                 .ToListAsync();
         }
@@ -27,16 +28,31 @@ namespace API_Modul295.Services
         public async Task<Order> GetOrderByIdAsync(int id)
         {
             return (await _context.Orders
+                .Include(o => o.Service)
                 .Where(o => o.OrderID == id && !o.IsDeleted)
                 .FirstOrDefaultAsync())!;
         }
 
-        public async Task<IEnumerable<Order>> GetOrdersByPriorityAsync(string priority)
+        public async Task<List<OrderDto>> GetOrdersByPriorityAsync(string priority)
         {
             string lowerPriority = priority.ToLower();
 
             return await _context.Orders
+                .Include(o => o.Service) // Dienstleistung einschließen
                 .Where(o => o.Priority.ToLower() == lowerPriority && !o.IsDeleted)
+                .Select(o => new OrderDto
+                {
+                    OrderID = o.OrderID,
+                    CustomerName = o.CustomerName,
+                    Email = o.Email,
+                    Phone = o.Phone,
+                    Priority = o.Priority,
+                    ServiceID = o.ServiceID,
+                    ServiceName = o.Service.ServiceName,
+                    Status = o.Status,
+                    DateCreated = o.DateCreated,
+                    DateModified = o.DateModified
+                })
                 .ToListAsync();
         }
 
@@ -54,7 +70,8 @@ namespace API_Modul295.Services
             // Überprüfen, ob die angegebene Priorität gültig ist
             if (!PriorityLevels.All.Contains(request.Priority, StringComparer.OrdinalIgnoreCase))
             {
-                throw new ArgumentException($"Ungültige Priorität. Gültige Werte sind: {string.Join(", ", PriorityLevels.All)}.");
+                throw new ArgumentException(
+                    $"Ungültige Priorität. Gültige Werte sind: {string.Join(", ", PriorityLevels.All)}.");
             }
 
             // Überprüfen, ob die angegebene ServiceID existiert
@@ -80,6 +97,9 @@ namespace API_Modul295.Services
             // Auftrag zur Datenbank hinzufügen
             _context.Orders.Add(newOrder);
             await _context.SaveChangesAsync();
+
+            // Lade die zugehörige Dienstleistung
+            await _context.Entry(newOrder).Reference(o => o.Service).LoadAsync();
 
             return newOrder;
         }
