@@ -29,11 +29,16 @@ namespace API_Modul295.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrderById(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest("Die angegebene ID ist ungültig.");
+            }
+
             var order = await _orderService.GetOrderByIdAsync(id);
 
             if (order == null)
             {
-                return NotFound();
+                return NotFound($"Kein Auftrag mit der ID {id} gefunden.");
             }
 
             return Ok(order);
