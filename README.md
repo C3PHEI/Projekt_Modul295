@@ -1,1 +1,1 @@
-Modul 295 Projekt mit Antyhony
+Modul 295 Projekt mit Anthony
