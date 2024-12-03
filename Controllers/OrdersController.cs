@@ -24,5 +24,19 @@ namespace API_Modul295.Controllers
             var orders = await _orderService.GetOrdersAsync();
             return Ok(orders);
         }
+        
+        // GET: api/orders/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Order>> GetOrderById(int id)
+        {
+            var order = await _orderService.GetOrderByIdAsync(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(order);
+        }
     }
 }

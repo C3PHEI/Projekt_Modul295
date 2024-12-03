@@ -7,5 +7,6 @@ namespace API_Modul295.Services
     public interface IOrderService
     {
         Task<IEnumerable<Order>> GetOrdersAsync();
+        Task<Order> GetOrderByIdAsync(int id);
     }
 }

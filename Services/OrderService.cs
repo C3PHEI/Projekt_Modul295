@@ -17,10 +17,16 @@ namespace API_Modul295.Services
 
         public async Task<IEnumerable<Order>> GetOrdersAsync()
         {
-            // Geschäftslogik hier implementieren
             return await _context.Orders
-                .Where(o => !o.IsDeleted) // Nur nicht gelöschte Aufträge
+                .Where(o => !o.IsDeleted)
                 .ToListAsync();
+        }
+
+        public async Task<Order> GetOrderByIdAsync(int id)
+        {
+            return await _context.Orders
+                .Where(o => o.OrderID == id && !o.IsDeleted)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -1,7 +1,7 @@
 using API_Modul295.Data;
 using API_Modul295.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models; // Namespace für Swagger hinzufügen
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
