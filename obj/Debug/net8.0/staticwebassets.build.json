@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "84JtRvsDkcDvRhvJhRfdBr3udw2TRfMYWUdNXyIgCFo=",
+  "Hash": "b2GRvMLjdACmf6PZ6iD691ZWsf2UwYRDkyXUZ6/+Gq0=",
   "Source": "API_Modul295",
   "BasePath": "_content/API_Modul295",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }
