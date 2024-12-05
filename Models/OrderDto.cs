@@ -12,6 +12,5 @@
         public string Status { get; set; }          // Status
         public DateTime DateCreated { get; set; }   // Erstellungsdatum
         public DateTime? DateModified { get; set; } // Änderungsdatum
-        public DateTime? DateModifie { get; set; }
     }
 }
