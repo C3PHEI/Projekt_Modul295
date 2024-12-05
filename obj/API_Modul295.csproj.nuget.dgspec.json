@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj": {}
+    "C:\\Users\\Max\\WebstormProjects\\Projekt_Modul295\\API_Modul295.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj": {
+    "C:\\Users\\Max\\WebstormProjects\\Projekt_Modul295\\API_Modul295.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj",
+        "projectUniqueName": "C:\\Users\\Max\\WebstormProjects\\Projekt_Modul295\\API_Modul295.csproj",
         "projectName": "API_Modul295",
-        "projectPath": "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj",
+        "projectPath": "C:\\Users\\Max\\WebstormProjects\\Projekt_Modul295\\API_Modul295.csproj",
         "packagesPath": "C:\\Users\\Max\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\obj\\",
+        "outputPath": "C:\\Users\\Max\\WebstormProjects\\Projekt_Modul295\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

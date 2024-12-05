@@ -3,53 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serviceauftrag Management</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h2 {
-            color: #333;
-        }
-        form, .filter, .orders, .login, .admin {
-            margin-bottom: 30px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, select, button {
-            padding: 8px;
-            width: 100%;
-            max-width: 400px;
-            margin-top: 5px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #aaa;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #ddd;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
-        .success {
-            color: green;
-            margin-top: 10px;
-        }
-        .admin {
-            display: none; /* Standardmäßig verstecken */
-        }
-    </style>
+    <title>Serviceauftrag Management - Login & Bestellung</title>
+    <!-- Verknüpfe die separate CSS-Datei -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -139,25 +95,7 @@
     <div id="ordersMessage"></div>
 </section>
 
-<!-- Abschnitt für Admin-Funktionen -->
-<section class="admin">
-    <h2>Admin: Mitarbeiterverwaltung</h2>
-    <table id="employeesTable">
-        <thead>
-        <tr>
-            <th>Mitarbeiter ID</th>
-            <th>Benutzername</th>
-            <th>Status</th>
-            <th>Aktionen</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Dynamisch mit JavaScript befüllt -->
-        </tbody>
-    </table>
-    <div id="employeesMessage"></div>
-</section>
-
+<!-- Verknüpfe die separate JavaScript-Datei -->
 <script src="script.js"></script>
 </body>
 </html>

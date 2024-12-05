@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterButton = document.getElementById('filterButton');
     const createOrderMessage = document.getElementById('createOrderMessage');
     const ordersMessage = document.getElementById('ordersMessage');
-    const adminSection = document.querySelector('.admin');
-    const employeesTableBody = document.querySelector('#employeesTable tbody');
-    const employeesMessage = document.getElementById('employeesMessage');
 
     // Initiale Funktionen
     fetchServices();
@@ -45,33 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 const token = data.token; // Angenommen, der JWT wird im Feld 'token' zurückgegeben
                 const role = data.role;   // Angenommen, die Rolle des Benutzers wird zurückgegeben
+                const username = data.username; // Angenommen, der Benutzername wird zurückgegeben
 
-                // Speichere den JWT im LocalStorage
+                // Speichere den JWT und die Benutzerrolle im LocalStorage
                 localStorage.setItem('jwt', token);
-
-                // Speichere die Benutzerrolle
                 localStorage.setItem('role', role);
+                localStorage.setItem('username', username);
 
-                loginMessage.textContent = `Erfolgreich eingeloggt als ${data.username}!`;
+                // Erfolgreicher Login-Meldung
+                loginMessage.textContent = `Erfolgreich eingeloggt als ${username}!`;
                 loginMessage.className = 'success';
 
-                // Zeige Admin-Bereich, wenn der Benutzer ein Admin ist
-                if (role === 'Admin') {
-                    adminSection.style.display = 'block';
-                    fetchEmployees();
-                }
-
-                // Öffne ein neues Fenster mit Benutzerinformationen
-                const loginWindow = window.open('', 'LoggedIn', 'width=300,height=200');
-                loginWindow.document.write(`
-                    <h2>Erfolgreich eingeloggt!</h2>
-                    <p>Benutzer: ${data.username}</p>
-                    <p>Rolle: ${role}</p>
-                    <button onclick="window.close()">Schließen</button>
-                `);
-
-                // Verstecke das Login-Formular nach dem Login
-                loginForm.style.display = 'none';
+                // Weiterleitung zum Dashboard nach kurzer Verzögerung
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
             } else {
                 const errorData = await response.json();
                 loginMessage.textContent = `Fehler: ${errorData.message}`;
@@ -90,12 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
         createOrderMessage.textContent = '';
         createOrderMessage.className = '';
 
+        // Optional: Prüfe, ob der Benutzer eingeloggt ist
         const jwt = localStorage.getItem('jwt');
-        if (!jwt) {
-            createOrderMessage.textContent = 'Bitte loggen Sie sich zuerst ein.';
-            createOrderMessage.className = 'error';
-            return;
-        }
 
         const orderData = {
             customerName: document.getElementById('customerName').value.trim(),
@@ -110,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${jwt}`
+                    ...(jwt && { 'Authorization': `Bearer ${jwt}` }) // Sende JWT, wenn vorhanden
                 },
                 body: JSON.stringify(orderData)
             });
@@ -142,11 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funktion zum Abrufen von Dienstleistungen
     async function fetchServices() {
         try {
-            const response = await fetch(`${apiBaseUrl}/services`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('jwt') || ''}`
-                }
-            });
+            const response = await fetch(`${apiBaseUrl}/services`);
             if (response.ok) {
                 const services = await response.json();
                 populateServicesDropdown(services);
@@ -227,97 +204,4 @@ document.addEventListener('DOMContentLoaded', () => {
             ordersTableBody.appendChild(row);
         });
     }
-
-    // Funktion zum Abrufen von Mitarbeitern (Admin-Funktion)
-    async function fetchEmployees() {
-        employeesTableBody.innerHTML = '';
-        employeesMessage.textContent = '';
-
-        const jwt = localStorage.getItem('jwt');
-        if (!jwt) {
-            employeesMessage.textContent = 'Bitte loggen Sie sich zuerst ein.';
-            employeesMessage.className = 'error';
-            return;
-        }
-
-        try {
-            const response = await fetch(`${apiBaseUrl}/employees`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${jwt}`
-                }
-            });
-
-            if (response.ok) {
-                const employees = await response.json();
-                if (employees.length === 0) {
-                    employeesMessage.textContent = 'Keine Mitarbeiter gefunden.';
-                    employeesMessage.className = 'error';
-                } else {
-                    populateEmployeesTable(employees);
-                }
-            } else {
-                const errorData = await response.json();
-                employeesMessage.textContent = `Fehler: ${errorData.message || errorData}`;
-                employeesMessage.className = 'error';
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            employeesMessage.textContent = 'Ein Fehler ist aufgetreten.';
-            employeesMessage.className = 'error';
-        }
-    }
-
-    // Funktion zum Befüllen der Mitarbeiter-Tabelle
-    function populateEmployeesTable(employees) {
-        employees.forEach(employee => {
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${employee.employeeID}</td>
-                <td>${employee.username}</td>
-                <td>${employee.isLocked ? 'Gesperrt' : 'Aktiv'}</td>
-                <td>
-                    ${employee.isLocked ? `<button onclick="unlockEmployee(${employee.employeeID})">Entsperren</button>` : '—'}
-                </td>
-            `;
-
-            employeesTableBody.appendChild(row);
-        });
-    }
-
-    // Funktion zum Entsperren eines Mitarbeiters (Admin-Funktion)
-    window.unlockEmployee = async (employeeID) => {
-        const jwt = localStorage.getItem('jwt');
-        if (!jwt) {
-            alert('Bitte loggen Sie sich zuerst ein.');
-            return;
-        }
-
-        if (!confirm(`Möchten Sie Mitarbeiter ID ${employeeID} entsperren?`)) {
-            return;
-        }
-
-        try {
-            const response = await fetch(`${apiBaseUrl}/employees/unlock`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${jwt}`
-                },
-                body: JSON.stringify({ employeeID })
-            });
-
-            if (response.ok) {
-                alert('Mitarbeiter erfolgreich entsperrt.');
-                fetchEmployees(); // Aktualisiere die Mitarbeiterliste
-            } else {
-                const errorData = await response.json();
-                alert(`Fehler: ${errorData.message || errorData}`);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Ein Fehler ist aufgetreten.');
-        }
-    };
 });
