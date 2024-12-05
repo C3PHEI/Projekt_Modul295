@@ -3,6 +3,10 @@ using API_Modul295.Services;
 using API_Modul295.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using API_Modul295.Data;
+using System.Linq;
+using System;
 
 namespace API_Modul295.Controllers
 {
@@ -11,14 +15,16 @@ namespace API_Modul295.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly ApiDbContext _context;
 
-        public OrdersController(IOrderService orderService)
+        // Konstruktor für die Injektion von IOrderService und ApiDbContext
+        public OrdersController(IOrderService orderService, ApiDbContext context)
         {
             _orderService = orderService;
+            _context = context;
         }
 
         // GET: api/orders
-        [HttpGet]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
         {
@@ -40,7 +46,7 @@ namespace API_Modul295.Controllers
 
             return Ok(orderDtos);
         }
-        
+
         // GET: api/orders/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrderById(int id)
@@ -73,7 +79,7 @@ namespace API_Modul295.Controllers
 
             return Ok(orderDto);
         }
-        
+
         // GET: api/orders/priority/{priority}
         [HttpGet("priority/{priority}")]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByPriority(string priority)
@@ -98,9 +104,8 @@ namespace API_Modul295.Controllers
 
             return Ok(orders);
         }
-        
+
         // POST: api/orders
-        //TODO Validierung (E-Mail/Phone)
         [HttpPost]
         public async Task<ActionResult<OrderDto>> CreateOrder([FromBody] OrderCreateRequest request)
         {
@@ -137,6 +142,39 @@ namespace API_Modul295.Controllers
             {
                 return StatusCode(500, $"Interner Serverfehler: {ex.Message}");
             }
+        }
+
+        // PUT: api/orders/{id}/status
+        [HttpPut("{id}/status")]
+        [Authorize]  // Authentifizierung erforderlich
+        public IActionResult UpdateOrderStatus(int id, [FromBody] UpdateStatusRequest request)
+        {
+            var order = _context.Orders.SingleOrDefault(o => o.OrderID == id);
+
+            if (order == null || order.IsDeleted)
+                return NotFound("Order not found or marked as deleted.");
+
+            order.Status = request.Status;
+            order.DateModified = DateTime.UtcNow;
+
+            _context.SaveChanges();
+            return Ok(order);
+        }
+
+        // DELETE: api/orders/{id}
+        [HttpDelete("{id}")]
+        [Authorize]  // Authentifizierung erforderlich
+        public IActionResult DeleteOrder(int id)
+        {
+            var order = _context.Orders.SingleOrDefault(o => o.OrderID == id);
+
+            if (order == null || order.IsDeleted)
+                return NotFound("Order not found or already deleted.");
+
+            order.IsDeleted = true;
+            _context.SaveChanges();
+
+            return Ok("Order marked as deleted.");
         }
     }
 }

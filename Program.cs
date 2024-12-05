@@ -1,9 +1,9 @@
 using API_Modul295.Data;
 using API_Modul295.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,15 +22,18 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        // Füge die richtigen Werte hier ein
+        options.Authority = "https://your-auth-provider"; // Die URL deines Authentifizierungsproviders (z.B. IdentityServer)
+        options.Audience = "your-api-audience"; // Die Audience deines Tokens
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            ValidIssuer = "your-issuer", // Dein Issuer
+            ValidAudience = "your-audience", // Deine Audience
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key")) // Der geheime Schlüssel für die Token-Verifizierung
         };
     });
 
@@ -39,17 +42,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Modul295", Version = "v1" });
-    // JWT-Token für Swagger hinzufügen
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        In = ParameterLocation.Header,
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
-        BearerFormat = "JWT",
         Scheme = "Bearer",
-        Description = "Please enter JWT with Bearer into field"
+        In = ParameterLocation.Header,
+        Description = "Please enter 'Bearer' followed by a space and then your JWT token"
     });
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -61,7 +61,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
@@ -77,9 +77,9 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Modul295 v1");
 });
 
-// JWT-Authentifizierung in die Pipeline einfügen
-app.UseAuthentication(); // Muss vor UseAuthorization kommen
-app.UseAuthorization();
+// Authentifizierung und Autorisierung einfügen
+app.UseAuthentication(); // Authentifizierung Middleware
+app.UseAuthorization();  // Autorisierungs Middleware
 
 app.MapControllers();
 

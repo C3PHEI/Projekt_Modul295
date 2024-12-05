@@ -12,6 +12,6 @@ namespace API_Modul295.Data
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<Employee> Employees { get; set; }  
+        public DbSet<Employee> Employees { get; set; }
     }
 }
