@@ -1,32 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj": {}
+    "C:\\Users\\Maximilian.Laepple\\RiderProjects\\Projekt_Modul295\\API_Modul295.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj": {
+    "C:\\Users\\Maximilian.Laepple\\RiderProjects\\Projekt_Modul295\\API_Modul295.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj",
+        "projectUniqueName": "C:\\Users\\Maximilian.Laepple\\RiderProjects\\Projekt_Modul295\\API_Modul295.csproj",
         "projectName": "API_Modul295",
-        "projectPath": "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\API_Modul295.csproj",
-        "packagesPath": "C:\\Users\\Max\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Max\\RiderProjects\\API_Modul295\\API_Modul295\\obj\\",
+        "projectPath": "C:\\Users\\Maximilian.Laepple\\RiderProjects\\Projekt_Modul295\\API_Modul295.csproj",
+        "packagesPath": "C:\\Users\\Maximilian.Laepple\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Maximilian.Laepple\\RiderProjects\\Projekt_Modul295\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
+        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
-          "C:\\Users\\Max\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Maximilian.Laepple\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,7 +37,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
+          "auditMode": "all"
         }
       },
       "frameworks": {
@@ -74,6 +68,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -82,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Maximilian.Laepple\\.dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

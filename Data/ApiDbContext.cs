@@ -9,7 +9,7 @@ namespace API_Modul295.Data
             : base(options)
         {
         }
-
+        
         public DbSet<Order> Orders { get; set; }
         public DbSet<Service> Services { get; set; }
     }
