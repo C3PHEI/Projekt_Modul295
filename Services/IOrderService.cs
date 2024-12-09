@@ -10,5 +10,6 @@ namespace API_Modul295.Services
         Task<Order> GetOrderByIdAsync(int id);
         Task<List<OrderDto>> GetOrdersByPriorityAsync(string priority);
         Task<Order> CreateOrderAsync(OrderCreateRequest request);
+        Task<bool> MarkOrderAsDeleted(int id);
     }
 }

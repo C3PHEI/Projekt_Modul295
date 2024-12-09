@@ -15,25 +15,37 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registrierung des OrderService
+// Registrierung von Services
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<AuthService>(); // AuthService registrieren
 
 // JWT-Authentifizierung konfigurieren
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // Füge die richtigen Werte hier ein
-        options.Authority = "https://your-auth-provider"; // Die URL deines Authentifizierungsproviders (z.B. IdentityServer)
-        options.Audience = "your-api-audience"; // Die Audience deines Tokens
-
+        // Konfiguration der JWT-Tokenprüfung
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
-            ValidIssuer = "your-issuer", // Dein Issuer
-            ValidAudience = "your-audience", // Deine Audience
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-secret-key")) // Der geheime Schlüssel für die Token-Verifizierung
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],  // Aus der Konfiguration lesen
+            ValidAudience = builder.Configuration["Jwt:Audience"], // Aus der Konfiguration lesen
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])) // Geheimer Schlüssel aus der Konfiguration
+        };
+
+        // Optional: Einrichten von Ereignissen wie z.B. Fehlerbehandlung
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                {
+                    context.Response.Headers.Add("Token-Expired", "true");
+                }
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -42,6 +54,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Modul295", Version = "v1" });
+
+    // JWT-Token Header für Swagger konfigurieren
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -50,6 +64,7 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Please enter 'Bearer' followed by a space and then your JWT token"
     });
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -70,17 +85,21 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-// Swagger-Middleware hinzufügen
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Modul295 v1");
+
+    // Entfernt die ModelRendering-Einstellung, die den Fehler verursacht hat
+    c.DefaultModelsExpandDepth(-1); // Keine Modelle im UI anzeigen
+    c.DefaultModelExpandDepth(2); // Modelle anzeigen, aber standardmäßig zusammenklappen
 });
 
-// Authentifizierung und Autorisierung einfügen
-app.UseAuthentication(); // Authentifizierung Middleware
-app.UseAuthorization();  // Autorisierungs Middleware
+// Authentifizierung und Autorisierung Middleware
+app.UseAuthentication();  // Authentifizierung Middleware
+app.UseAuthorization();   // Autorisierungs Middleware
 
+// Routing und Controller
 app.MapControllers();
 
 app.Run();

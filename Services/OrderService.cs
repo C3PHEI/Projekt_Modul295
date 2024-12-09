@@ -55,7 +55,18 @@ namespace API_Modul295.Services
                 })
                 .ToListAsync();
         }
+        public async Task<bool> MarkOrderAsDeleted(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
 
+            if (order == null)
+                return false; // Auftrag existiert nicht
+
+            order.IsDeleted = true; // Auftrag als gelöscht markieren
+            await _context.SaveChangesAsync();
+            return true; // Erfolgreich aktualisiert
+        }
+        
         public async Task<Order> CreateOrderAsync(OrderCreateRequest request)
         {
             // Validierung der Eingabedaten (optional, kann auch im Controller erfolgen)
@@ -80,6 +91,8 @@ namespace API_Modul295.Services
             {
                 throw new ArgumentException($"Die Dienstleistung mit der ID {request.ServiceID} existiert nicht.");
             }
+            
+            
 
             // Erstellen eines neuen Auftrags
             var newOrder = new Order

@@ -162,19 +162,18 @@ namespace API_Modul295.Controllers
         }
 
         // DELETE: api/orders/{id}
+        // DELETE api/orders/{id}
         [HttpDelete("{id}")]
-        [Authorize]  // Authentifizierung erforderlich
-        public IActionResult DeleteOrder(int id)
+        [Authorize(Roles = "Admin")] // Nur Admins dürfen löschen
+        public async Task<IActionResult> DeleteOrder(int id)
         {
-            var order = _context.Orders.SingleOrDefault(o => o.OrderID == id);
+            var success = await _orderService.MarkOrderAsDeleted(id);
 
-            if (order == null || order.IsDeleted)
-                return NotFound("Order not found or already deleted.");
+            if (!success)
+                return NotFound(new { message = "Order not found" });
 
-            order.IsDeleted = true;
-            _context.SaveChanges();
-
-            return Ok("Order marked as deleted.");
+            return Ok(new { message = "Order marked as deleted successfully" });
         }
+
     }
 }
