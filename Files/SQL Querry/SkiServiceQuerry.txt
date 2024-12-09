@@ -1,0 +1,56 @@
+-- Erstellen der Datenbank 
+CREATE DATABASE JetstreamServiceDB;
+GO
+
+-- Verwenden der neu erstellten Datenbank
+USE JetstreamServiceDB;
+GO
+
+CREATE TABLE Employees
+(
+    EmployeeID INT PRIMARY KEY IDENTITY(1,1),  -- Automatisch inkrementierende ID
+    Username NVARCHAR(255) NOT NULL,  -- Der Benutzername des Mitarbeiters
+    Password NVARCHAR(255) NOT NULL,  -- Klartext-Passwort
+    FailedLoginAttempts INT DEFAULT 0,  -- Anzahl der fehlgeschlagenen Anmeldeversuche
+    IsLocked BIT DEFAULT 0,  -- Gibt an, ob das Konto gesperrt ist (0 = nicht gesperrt, 1 = gesperrt)
+    IsAdmin BIT DEFAULT 0,  -- Gibt an, ob der Mitarbeiter Administratorrechte hat (0 = normaler Benutzer, 1 = Administrator)
+    Role NVARCHAR(50) DEFAULT 'User'  -- Rolle des Mitarbeiters (z.B. "Admin", "User")
+);
+GO
+
+-- Tabelle für Dienstleistungen
+CREATE TABLE Services (
+    ServiceID INT IDENTITY(1,1) PRIMARY KEY,
+    ServiceName NVARCHAR(100) NOT NULL UNIQUE
+);
+GO
+
+-- Einfügen der angebotenen Dienstleistungen
+INSERT INTO Services (ServiceName) VALUES
+('Kleiner Service'),
+('Grosser Service'),
+('Rennski-Service'),
+('Bindung montieren und einstellen'),
+('Fell zuschneiden'),
+('Heisswachsen');
+GO
+
+-- Tabelle für Serviceaufträge
+CREATE TABLE Orders (
+    OrderID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    Phone NVARCHAR(20) NULL,
+    Priority NVARCHAR(50) NOT NULL,
+    ServiceID INT NOT NULL,
+    Status NVARCHAR(20) NOT NULL DEFAULT 'Offen',
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    DateCreated DATETIME NOT NULL DEFAULT GETDATE(),
+    DateModified DATETIME NULL,
+    FOREIGN KEY (ServiceID) REFERENCES Services(ServiceID)
+);
+GO
+
+-- Indizes für schnellere Abfragen (optional)
+CREATE INDEX IDX_Orders_Priority ON Orders(Priority);
+CREATE INDEX IDX_Orders_Status ON Orders(Status);
