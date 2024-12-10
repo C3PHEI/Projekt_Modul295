@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - JetstreamServiceAPI</title>
+    <!-- Bootstrap CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional: Font Awesome für Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQkzQ1UQiJvQq4bO4P4NspbiDvM0bgXbKkFbQ0w4YZdOvX7z3nR36Fd7eYjTeTkM59C1YntXyXMj1+Jiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow" style="width: 400px;">
+        <h3 class="card-title text-center mb-4">Login</h3>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="username" class="form-label">Benutzername</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Passwort</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Einloggen</button>
+        </form>
+        <div id="alertContainer"></div>
+    </div>
+</div>
+
+<!-- Bootstrap JS via CDN (optional, für interaktive Komponenten) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

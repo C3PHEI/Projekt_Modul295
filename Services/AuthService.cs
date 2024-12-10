@@ -24,6 +24,11 @@ namespace API_Modul295.Services
 
         public string GenerateJwtToken(Employee employee)
         {
+            // Temporäres Logging zur Überprüfung der Konfiguration
+            Console.WriteLine($"JWT Key: {_configuration["Jwt:Key"]}");
+            Console.WriteLine($"JWT Issuer: {_configuration["Jwt:Issuer"]}");
+            Console.WriteLine($"JWT Audience: {_configuration["Jwt:Audience"]}");
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, employee.Username),

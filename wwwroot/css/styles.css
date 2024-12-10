@@ -1,0 +1,11 @@
+﻿/* styles.css */
+
+/* Hintergrundfarbe für den gesamten Körper */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Anpassungen für die Nachrichtenanzeige */
+#message {
+    font-weight: bold;
+}

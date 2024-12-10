@@ -314,3 +314,5 @@ C:\Users\sebas\RiderProjects\Projekt_Modul295\obj\Debug\net8.0\API_Modul295.pdb
 C:\Users\sebas\RiderProjects\Projekt_Modul295\obj\Debug\net8.0\API_Modul295.genruntimeconfig.cache
 C:\Users\sebas\RiderProjects\Projekt_Modul295\obj\Debug\net8.0\ref\API_Modul295.dll
 C:\Users\sebas\RiderProjects\Projekt_Modul295\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Max\RiderProjects\Projekt_Modul295\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Max\RiderProjects\Projekt_Modul295\bin\Debug\net8.0\API_Modul295.staticwebassets.runtime.json
