@@ -8,9 +8,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
-
 // DbContext konfigurieren
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -18,6 +15,17 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 // Registrierung von Services
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<AuthService>(); // AuthService registrieren
+
+// CORS konfigurieren, hier ein sehr offenes Beispiel
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policyBuilder =>
+    {
+        policyBuilder.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader();
+    });
+});
 
 // JWT-Authentifizierung konfigurieren
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -35,12 +43,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
 
-        // Optional: Einrichten von Ereignissen wie z.B. Fehlerbehandlung
+        // Optional: Ereignisse für erweiterte Fehlerbehandlung
         options.Events = new JwtBearerEvents
         {
             OnAuthenticationFailed = context =>
             {
-                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                if (context.Exception is SecurityTokenExpiredException)
                 {
                     context.Response.Headers.Add("Token-Expired", "true");
                 }
@@ -54,8 +62,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Modul295", Version = "v1" });
-
-    // JWT-Token Header für Swagger konfigurieren
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -64,42 +70,42 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Please enter 'Bearer' followed by a space and then your JWT token"
     });
-
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
-            new string[] { }
+            new string[] {}
         }
     });
 });
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware-Pipeline
 
+// Swagger UI aktivieren
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Modul295 v1");
-
-    // Entfernt die ModelRendering-Einstellung, die den Fehler verursacht hat
-    c.DefaultModelsExpandDepth(-1); // Keine Modelle im UI anzeigen
-    c.DefaultModelExpandDepth(2); // Modelle anzeigen, aber standardmäßig zusammenklappen
+    c.DefaultModelsExpandDepth(-1); // Keine Modelle im UI ausklappen
 });
 
-// Authentifizierung und Autorisierung Middleware
-app.UseAuthentication();  // Authentifizierung Middleware
-app.UseAuthorization();   // Autorisierungs Middleware
+// CORS Middleware
+app.UseCors("AllowAll");
 
-// Routing und Controller
+// Authentication und Authorization
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
 
 app.Run();

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Kdm/1Ld/Y6yCti/ukaPu7g2glVFylDpni1g+5H2WXpY=",
+  "Hash": "nBb2Bp+BEjh1OeLIaBeWRSwcpVcsL6WLhO43sxYZoq0=",
   "Source": "API_Modul295",
   "BasePath": "_content/API_Modul295",
   "Mode": "Default",
@@ -10,87 +10,322 @@
     {
       "Name": "API_Modul295\\wwwroot",
       "Source": "API_Modul295",
-      "ContentRoot": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
       "BasePath": "_content/API_Modul295",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\css\\styles.css",
+      "Identity": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\dashboard.html",
       "SourceId": "API_Modul295",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
       "BasePath": "_content/API_Modul295",
-      "RelativePath": "css/styles.css",
+      "RelativePath": "dashboard#[.{fingerprint}]?.html",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeBehavior": "",
       "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
+      "Fingerprint": "htublabtrb",
+      "Integrity": "OwI55xQNopaUnHVMzEiQhh31uicC2ZA6Ni8JlCVHT40=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\styles.css"
+      "OriginalItemSpec": "wwwroot\\dashboard.html"
     },
     {
-      "Identity": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\index.html",
+      "Identity": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\index.html",
       "SourceId": "API_Modul295",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
       "BasePath": "_content/API_Modul295",
-      "RelativePath": "index.html",
+      "RelativePath": "index#[.{fingerprint}]?.html",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeBehavior": "",
       "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
+      "Fingerprint": "0afo5xtjts",
+      "Integrity": "qMPerNNAxCyUcJTXXLSy+Ryy3ABcw7W1GJNqIYc1YQc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\index.html"
     },
     {
-      "Identity": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\js\\app.js",
+      "Identity": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\script.js",
       "SourceId": "API_Modul295",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
       "BasePath": "_content/API_Modul295",
-      "RelativePath": "js/app.js",
+      "RelativePath": "script#[.{fingerprint}]?.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeBehavior": "",
       "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
+      "Fingerprint": "4snwp7wlnt",
+      "Integrity": "nEpF7immKOXH6B0W0ee91y7nTEMIsFE6htXT1whp0FA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\app.js"
+      "OriginalItemSpec": "wwwroot\\script.js"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "dashboard.html",
+      "AssetFile": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\dashboard.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13168"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OwI55xQNopaUnHVMzEiQhh31uicC2ZA6Ni8JlCVHT40=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 23:02:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-OwI55xQNopaUnHVMzEiQhh31uicC2ZA6Ni8JlCVHT40="
+        }
+      ]
     },
     {
-      "Identity": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\protected.html",
-      "SourceId": "API_Modul295",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Max\\RiderProjects\\Projekt_Modul295\\wwwroot\\",
-      "BasePath": "_content/API_Modul295",
-      "RelativePath": "protected.html",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\protected.html"
+      "Route": "dashboard.htublabtrb.html",
+      "AssetFile": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\dashboard.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13168"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OwI55xQNopaUnHVMzEiQhh31uicC2ZA6Ni8JlCVHT40=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 23:02:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "htublabtrb"
+        },
+        {
+          "Name": "label",
+          "Value": "dashboard.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-OwI55xQNopaUnHVMzEiQhh31uicC2ZA6Ni8JlCVHT40="
+        }
+      ]
+    },
+    {
+      "Route": "index.0afo5xtjts.html",
+      "AssetFile": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5433"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"qMPerNNAxCyUcJTXXLSy+Ryy3ABcw7W1GJNqIYc1YQc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 21:53:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "0afo5xtjts"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-qMPerNNAxCyUcJTXXLSy+Ryy3ABcw7W1GJNqIYc1YQc="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5433"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"qMPerNNAxCyUcJTXXLSy+Ryy3ABcw7W1GJNqIYc1YQc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 21:53:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-qMPerNNAxCyUcJTXXLSy+Ryy3ABcw7W1GJNqIYc1YQc="
+        }
+      ]
+    },
+    {
+      "Route": "script.4snwp7wlnt.js",
+      "AssetFile": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\script.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5650"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nEpF7immKOXH6B0W0ee91y7nTEMIsFE6htXT1whp0FA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 22:53:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4snwp7wlnt"
+        },
+        {
+          "Name": "label",
+          "Value": "script.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-nEpF7immKOXH6B0W0ee91y7nTEMIsFE6htXT1whp0FA="
+        }
+      ]
+    },
+    {
+      "Route": "script.js",
+      "AssetFile": "C:\\Users\\maxim\\RiderProjects\\Projekt_Modul295\\wwwroot\\script.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5650"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nEpF7immKOXH6B0W0ee91y7nTEMIsFE6htXT1whp0FA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 13 Dec 2024 22:53:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-nEpF7immKOXH6B0W0ee91y7nTEMIsFE6htXT1whp0FA="
+        }
+      ]
     }
   ]
 }

@@ -20,4 +20,8 @@
       <Folder Include="Files\SQL Querry\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\css\styles.css" />
+    </ItemGroup>
+
 </Project>

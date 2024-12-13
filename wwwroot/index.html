@@ -1,35 +1,122 @@
 ﻿<!DOCTYPE html>
-<html lang="de">
+<html lang="de-ch">
 <head>
-    <meta charset="UTF-8">
-    <title>Login - JetstreamServiceAPI</title>
-    <!-- Bootstrap CSS via CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Optional: Font Awesome für Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQkzQ1UQiJvQq4bO4P4NspbiDvM0bgXbKkFbQ0w4YZdOvX7z3nR36Fd7eYjTeTkM59C1YntXyXMj1+Jiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order Management - Öffentlich</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            padding: 20px;
+        }
+        #loginSection, #createOrderSection {
+            margin: 40px 0;
+        }
+    </style>
 </head>
 <body>
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card p-4 shadow" style="width: 400px;">
-        <h3 class="card-title text-center mb-4">Login</h3>
-        <form id="loginForm">
-            <div class="mb-3">
-                <label for="username" class="form-label">Benutzername</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+<div class="container">
+    <h1>Order Management</h1>
+    <p>Sie können hier Bestellungen erstellen, ohne angemeldet zu sein.</p>
+    <p>Wenn Sie ein Mitarbeiter sind, können Sie sich einloggen, um Zugriff auf das Dashboard zu erhalten, wo Sie Orders bearbeiten können.</p>
+
+    <!-- Login Bereich -->
+    <div id="loginSection">
+        <h3>Login für Mitarbeiter</h3>
+        <form id="loginFormInner">
+            <div class="form-group">
+                <label for="usernameInput">Username:</label>
+                <input type="text" class="form-control" id="usernameInput" required />
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Passwort</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+            <div class="form-group">
+                <label for="passwordInput">Password:</label>
+                <input type="password" class="form-control" id="passwordInput" required />
             </div>
-            <button type="submit" class="btn btn-primary w-100">Einloggen</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
-        <div id="alertContainer"></div>
+        <div id="loginMessage" class="text-danger mt-2"></div>
+    </div>
+
+    <!-- Neue Order erstellen (ohne Login) -->
+    <div id="createOrderSection">
+        <h3>Neue Order erstellen (ohne Anmeldung)</h3>
+        <form id="publicOrderCreateForm">
+            <div class="form-group">
+                <label for="publicCustomerName">Kundenname:</label>
+                <input type="text" class="form-control" id="publicCustomerName" required>
+            </div>
+            <div class="form-group">
+                <label for="publicEmail">E-Mail:</label>
+                <input type="email" class="form-control" id="publicEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="publicPhone">Telefon:</label>
+                <input type="text" class="form-control" id="publicPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="publicPriority">Priorität:</label>
+                <select class="form-control" id="publicPriority">
+                    <option value="Hoch">Hoch</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Niedrig">Niedrig</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="publicServiceId">Service:</label>
+                <select class="form-control" id="publicServiceId" required>
+                    <option value="1">Kleiner Service</option>
+                    <option value="2">Grosser Service</option>
+                    <option value="3">Rennski-Service</option>
+                    <option value="4">Bindung montieren und einstellen</option>
+                    <option value="5">Fell zuschneiden</option>
+                    <option value="6">Heisswachsen</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">Order Erstellen</button>
+            <div id="publicCreateOrderMessage" class="mt-2 text-info"></div>
+        </form>
     </div>
 </div>
 
-<!-- Bootstrap JS via CDN (optional, für interaktive Komponenten) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/app.js"></script>
+<script src="./script.js"></script>
+<script>
+    const loginFormInner = document.getElementById('loginFormInner');
+    const loginMessage = document.getElementById('loginMessage');
+    const publicOrderCreateForm = document.getElementById('publicOrderCreateForm');
+    const publicCreateOrderMessage = document.getElementById('publicCreateOrderMessage');
+
+    // Login Logik
+    loginFormInner.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const username = document.getElementById('usernameInput').value;
+        const password = document.getElementById('passwordInput').value;
+
+        const token = await login(username, password);
+        if (token) {
+            localStorage.setItem('jwtToken', token);
+            // Nach erfolgreichem Login zu dashboard.html weiterleiten
+            window.location.href = 'dashboard.html';
+        } else {
+            loginMessage.textContent = "Login fehlgeschlagen!";
+        }
+    });
+
+    // Öffentliche Order erstellen (ohne Login)
+    publicOrderCreateForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const customerName = document.getElementById('publicCustomerName').value;
+        const email = document.getElementById('publicEmail').value;
+        const phone = document.getElementById('publicPhone').value;
+        const priority = document.getElementById('publicPriority').value;
+        const serviceId = parseInt(document.getElementById('publicServiceId').value, 10);
+
+        const success = await createOrder(null, { customerName, email, phone, priority, serviceId });
+        if (success) {
+            publicCreateOrderMessage.textContent = "Order erfolgreich erstellt!";
+        } else {
+            publicCreateOrderMessage.textContent = "Fehler beim Erstellen der Order!";
+        }
+    });
+</script>
 </body>
 </html>

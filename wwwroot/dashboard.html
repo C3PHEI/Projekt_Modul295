@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="de-ch">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            padding: 20px;
+        }
+        #userInfoSection, #createOrderForm, #orderTableSection, #filterSection, #logoutBtn {
+            margin-top: 20px;
+        }
+        #orderTableSection table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Navbar / Header -->
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Order Management - Dashboard</h1>
+        <div>
+            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+        </div>
+    </div>
+
+    <!-- User Info Section -->
+    <div id="userInfoSection" style="display:none;">
+        <h4>Benutzer Informationen</h4>
+        <p>Rolle: <span id="userRole"></span></p>
+        <p>Benutzername: <span id="userName"></span></p>
+    </div>
+
+    <!-- Create Order Form -->
+    <div id="createOrderForm" style="display:none;">
+        <h4>Neue Order erstellen (als Mitarbeiter)</h4>
+        <form id="orderCreateForm">
+            <div class="form-group">
+                <label for="customerName">Kundenname:</label>
+                <input type="text" class="form-control" id="customerName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-Mail:</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Telefon:</label>
+                <input type="text" class="form-control" id="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="priority">Priorität:</label>
+                <select class="form-control" id="priority">
+                    <option value="Hoch">Hoch</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Niedrig">Niedrig</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="serviceId">Service:</label>
+                <select class="form-control" id="serviceId" required>
+                    <option value="1">Kleiner Service</option>
+                    <option value="2">Grosser Service</option>
+                    <option value="3">Rennski-Service</option>
+                    <option value="4">Bindung montieren und einstellen</option>
+                    <option value="5">Fell zuschneiden</option>
+                    <option value="6">Heisswachsen</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Order Erstellen</button>
+            <div id="createOrderMessage" class="mt-2 text-info"></div>
+        </form>
+    </div>
+
+    <!-- Filter Section -->
+    <div id="filterSection" style="display:none;">
+        <h4>Orders nach Priorität filtern</h4>
+        <div class="form-group">
+            <label for="priorityFilter">Priorität:</label>
+            <select class="form-control" id="priorityFilter">
+                <option value="">Alle</option>
+                <option value="Hoch">Hoch</option>
+                <option value="Normal">Normal</option>
+                <option value="Niedrig">Niedrig</option>
+            </select>
+        </div>
+        <button id="filterBtn" class="btn btn-secondary">Filtern</button>
+    </div>
+
+    <!-- Orders Table -->
+    <div id="orderTableSection" style="display:none;">
+        <h4>Alle Orders</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>OrderID</th>
+                <th>CustomerName</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Priority</th>
+                <th>ServiceName</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal für Status-Änderung -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusModalLabel">Order-Status ändern</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Schliessen">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="statusForm">
+                    <div class="form-group">
+                        <label for="statusSelect">Neuer Status:</label>
+                        <select class="form-control" id="statusSelect">
+                            <option value="Offen">Offen</option>
+                            <option value="In-Arbeit">In-Arbeit</option>
+                            <option value="Storniert">Storniert</option>
+                            <option value="Abgeschlossen">Abgeschlossen</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="currentOrderId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                <button type="button" class="btn btn-primary" id="saveStatusBtn">Speichern</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="adminSection" style="display:none; margin-top:20px;">
+    <h4>Mitarbeiter Liste</h4>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>EmployeeID</th>
+            <th>Username</th>
+            <th>IsAdmin</th>
+            <th>IsLocked</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="employeesTableBody"></tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./script.js"></script>
+<script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userInfoSection = document.getElementById('userInfoSection');
+    const createOrderForm = document.getElementById('createOrderForm');
+    const orderCreateForm = document.getElementById('orderCreateForm');
+    const createOrderMessage = document.getElementById('createOrderMessage');
+    const orderTableSection = document.getElementById('orderTableSection');
+    const priorityFilter = document.getElementById('priorityFilter');
+    const filterBtn = document.getElementById('filterBtn');
+    const ordersTableBody = document.getElementById('ordersTableBody');
+    const userRoleSpan = document.getElementById('userRole');
+    const userNameSpan = document.getElementById('userName');
+    const filterSection = document.getElementById('filterSection');
+
+    let jwtToken = localStorage.getItem('jwtToken');
+
+    if(!jwtToken) {
+        window.location.href = 'index.html';
+    } else {
+        updateDashboardUI();
+        loadOrders();
+    }
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('jwtToken');
+        window.location.href = 'index.html';
+    });
+
+    orderCreateForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const customerName = document.getElementById('customerName').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const priority = document.getElementById('priority').value;
+        const serviceId = parseInt(document.getElementById('serviceId').value, 10);
+
+        const success = await createOrder(jwtToken, {customerName, email, phone, priority, serviceId});
+        if (success) {
+            createOrderMessage.textContent = "Order erfolgreich erstellt!";
+            loadOrders(priorityFilter.value);
+        } else {
+            createOrderMessage.textContent = "Fehler beim Erstellen der Order!";
+        }
+    });
+
+    async function loadEmployees() {
+        const employees = await getEmployees(jwtToken);
+        if (employees) {
+            renderEmployeesTable(employees);
+        }
+    }
+
+    function renderEmployeesTable(employees) {
+        const employeesTableBody = document.getElementById('employeesTableBody');
+        employeesTableBody.innerHTML = "";
+        employees.forEach(emp => {
+            const isLockedText = emp.isLocked ? "Ja" : "Nein";
+
+            let actionButtons = "";
+            if (emp.isLocked) {
+                // Button zum Entsperren
+                actionButtons = `<button class="btn btn-sm btn-warning" onclick="unlockEmployee(${emp.employeeID})">Entsperren</button>`;
+            } else {
+                actionButtons = "—";
+            }
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+            <td>${emp.employeeID}</td>
+            <td>${emp.username}</td>
+            <td>${emp.isAdmin}</td>
+            <td>${isLockedText}</td>
+            <td>${actionButtons}</td>
+        `;
+            employeesTableBody.appendChild(tr);
+        });
+    }
+
+    filterBtn.addEventListener('click', () => {
+        const selectedPriority = priorityFilter.value;
+        loadOrders(selectedPriority);
+    });
+
+    async function updateDashboardUI() {
+        const userInfo = await getUserInfo(jwtToken);
+        if (userInfo) {
+            userRoleSpan.textContent = userInfo.role || "Unbekannt";
+            userNameSpan.textContent = userInfo.userName || "Unbekannt";
+
+            // Wenn Rolle = Admin, dann adminSection anzeigen und Mitarbeiter laden
+            if (userInfo.role === "Admin") {
+                document.getElementById('adminSection').style.display = "block";
+                loadEmployees();
+            }
+        } else {
+            userRoleSpan.textContent = "Unbekannt";
+            userNameSpan.textContent = "Unbekannt";
+        }
+
+        userInfoSection.style.display = "block";
+        createOrderForm.style.display = "block";
+        orderTableSection.style.display = "block";
+        filterSection.style.display = "block";
+    }
+
+    async function loadOrders(priority = "") {
+        const orders = await getOrders(jwtToken, priority);
+        if (orders) {
+            renderOrdersTable(orders);
+        }
+    }
+
+    function renderOrdersTable(orders) {
+        ordersTableBody.innerHTML = "";
+        orders.forEach(order => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                    <td>${order.orderID}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.email}</td>
+                    <td>${order.phone}</td>
+                    <td>${order.priority}</td>
+                    <td>${order.serviceName}</td>
+                    <td>${order.status}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" data-id="${order.orderID}" onclick="openStatusModal(${order.orderID})">Status ändern</button>
+                        <button class="btn btn-sm btn-danger" data-id="${order.orderID}" onclick="deleteOrderRequest(${order.orderID})">Löschen</button>
+                    </td>
+                `;
+            ordersTableBody.appendChild(tr);
+        });
+    }
+
+    window.openStatusModal = function(orderId) {
+        document.getElementById('currentOrderId').value = orderId;
+        $('#statusModal').modal('show');
+    };
+
+    document.getElementById('saveStatusBtn').addEventListener('click', async () => {
+        const orderId = document.getElementById('currentOrderId').value;
+        const newStatus = document.getElementById('statusSelect').value;
+        const success = await updateOrderStatus(jwtToken, orderId, newStatus);
+        if (success) {
+            alert("Status erfolgreich geändert!");
+            $('#statusModal').modal('hide');
+            loadOrders(priorityFilter.value);
+        } else {
+            alert("Fehler beim Updaten des Status!");
+        }
+    });
+
+    window.deleteOrderRequest = async function(orderId) {
+        if (!confirm("Sind Sie sicher, dass Sie diese Order löschen möchten?")) return;
+        const success = await deleteOrder(jwtToken, orderId);
+        if (success) {
+            alert("Order erfolgreich gelöscht!");
+            loadOrders(priorityFilter.value);
+        } else {
+            alert("Fehler beim Löschen der Order!");
+        }
+    };
+</script>
+</body>
+</html>
